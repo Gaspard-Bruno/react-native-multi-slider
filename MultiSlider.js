@@ -588,6 +588,41 @@ export default class MultiSlider extends React.Component {
               style={[styles.touch, touchStyle]}
               ref={component => (this._markerOne = component)}
               {...this._panResponderOne.panHandlers}
+              accessible
+              accessibilityRole="adjustable"
+              accessibilityLabel={this.state.valueOne.toString()}
+              accessibilityHint={this.props.accessibilityHint}
+              accessibilityActions={[
+                { name: 'increment', label: 'increment' },
+                { name: 'decrement', label: 'decrement' },
+              ]}
+              onAccessibilityAction={event => {
+                const step =
+                  this.props.sliderLength / (this.optionsArray.length - 1);
+                const isMax =
+                  this.state.valueOne >= this.optionsArray.length - 1;
+                const isMin = this.state.valueOne <= 0;
+                const { valueOne, positionOne } = this.state;
+
+                switch (event.nativeEvent.actionName) {
+                  case 'increment':
+                    this.setState({
+                      positionOne: isMax ? positionOne : positionOne + step,
+                    });
+                    this.setState({
+                      valueOne: isMax ? valueOne : valueOne + 1,
+                    });
+                    break;
+                  case 'decrement':
+                    this.setState({
+                      positionOne: isMin ? positionOne : positionOne - step,
+                    });
+                    this.setState({
+                      valueOne: isMin ? valueOne : valueOne - 1,
+                    });
+                    break;
+                }
+              }}
             >
               {isMarkersSeparated === false ? (
                 <Marker
