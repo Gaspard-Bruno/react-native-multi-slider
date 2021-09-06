@@ -54,6 +54,7 @@ export default class MultiSlider extends React.Component {
     minMarkerOverlapDistance: 0,
     minMarkerOverlapStepDistance: 0,
     testID: '',
+    accessibilityHint: '',
   };
 
   constructor(props) {
